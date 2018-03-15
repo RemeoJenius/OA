@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>任务列表</title>
+    <link rel="stylesheet" href="/css/semantic.css">
+    <script src="/js/vue1.js" charset="utf-8"></script>
+    <script src="/js/reqwest.js" charset="utf-8"></script>
+    <script src="/js/dateFormat.js" charset="utf-8"></script>
+</head>
+
+<body id="app">
+    <div class="ui one column grid">
+        <div class="column">
+            <div class="ui raised segment">
+                <a class="ui red ribbon label">leave flow</a>
+                <span>任务管理列表</span>
+                <table class="ui black table">
+                    <thead>
+                        <tr>
+                            <th>任务ID</th>
+                            <th>任务名称</th>
+                            <th>创建时间</th>
+                            <th>办理人</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="task in taskList">
+                            <td>{{task.taskId}}</td>
+                            <td>{{task.name}}</td>
+                            <td>{{task.createTime}}</td>
+                            <td>{{task.assignee}}</td>
+                            <td><a href="/auth/workflow/handleTask.html?id={{task.taskId}}">办理任务</a>&nbsp&nbsp<a href="/auth/workflow/workflowImage.html?taskId={{task.taskId}}&processDefinitionId={{task.processDefinitionId}}" >查看当前流程图</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script>
+    var vu = new Vue({
+        el: '#app',
+        data: {
+            taskList: [],
+            deploymentId : null,
+            imageName : null
+        },
+        methods: {
+            getData: function() {
+                var self = this;
+                reqwest({
+                    url: "/api/findMyprocess",
+                    type: "json",
+                    method: "get",
+                    success: function(root) {
+                        console.log(root);
+                        root.forEach(function(element) {
+                            element.createTime = self.dateFormat(element.createTime);
+                        });
+                        self.taskList = root;
+                    }
+                })
+            },
+            dateFormat: function(time) {
+                var date = new Date(time);
+                Y = date.getFullYear() + '-';
+                M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                D = date.getDate() + ' ';
+                h = date.getHours() + ':';
+                m = date.getMinutes() + ':';
+                s = date.getSeconds();
+                return Y + M + D + h + m + s;
+            }
+        },
+        ready:function () {
+            this.getData();
+        }
+
+
+    });
+</script>
+
+</html>

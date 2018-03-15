@@ -1,0 +1,94 @@
+<html>
+<head>
+    <title>部门列表</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="/css/blue/pageCommon.css" />
+    <script src="/js/vue1.js" charset="utf-8"></script>
+    <script src="/js/reqwest.js" charset="utf-8"></script>
+    <script src="/js/jquery-3.1.1.js" charset="utf-8"></script>
+    <script src="/js/common.js" charset="utf-8"></script>
+    <script src="/js/jquery-confirm.js" charset="utf-8"></script>
+
+</head>
+<body id="app">
+
+<div id="Title_bar">
+    <div id="Title_bar_Head">
+        <div id="Title_Head"></div>
+        <div id="Title"><!--页面标题-->
+            <img border="0" width="13" height="13" src="/css/images/title_arrow.gif"/> 部门管理
+        </div>
+        <div id="Title_End"></div>
+    </div>
+</div>
+
+<div id="MainArea">
+    <table cellspacing="0" cellpadding="0" class="TableStyle">
+
+        <!-- 表头-->
+        <thead>
+            <tr align=center valign=middle id=TableTitle>
+            	<td width="150px">部门名称</td>
+
+				<td width="200px">职能说明</td>
+				<td>相关操作</td>
+            </tr>
+        </thead>
+
+		<!--显示数据列表-->
+        <tbody id="TableData" class="dataContainer" datakey="departmentList">
+			<tr v-for="department in departmentList" class="TableDetail1 template">
+				<td><a href="_list_level2.html">{{department.dname}}</a>&nbsp;</td>
+
+				<td>{{department.description}}&nbsp;</td>
+				<td><a href="/api/deleteDepartment?Did={{department.id}}">删除</a>
+					<a href="saveUI.html?id={{department.id}}">修改</a>
+				</td>
+			</tr>
+        </tbody>
+    </table>
+
+    <!-- 其他功能超链接 -->
+    <div id="TableTail">
+        <div id="TableTail_inside">
+            <a href="saveUI.html"><img src="/css/images/createNew.png" /></a>
+        </div>
+    </div>
+</div>
+
+<!--说明-->
+<div id="Description">
+	说明：<br />
+	1，列表页面只显示一层的（同级的）部门数据，默认显示最顶级的部门列表。<br />
+	2，点击部门名称，可以查看此部门相应的下级部门列表。<br />
+	3，删除部门时，同时删除此部门的所有下级部门。
+</div>
+
+</body>
+<script>
+var vm = new Vue({
+   el:'#app',
+   data:{
+       departmentList:[]
+   },
+   methods:{
+       getData: function() {
+          var self = this;
+          reqwest({
+              url: "/api/departmentList",
+              type: "json",
+              method: "get",
+              success: function(root) {
+                  console.log(root[0]);
+                  self.departmentList = root;
+              }
+          })
+
+      }
+  },
+  ready:function () {
+       this.getData();
+  }
+});
+</script>
+</html>

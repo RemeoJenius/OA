@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>请假</title>
+    <link rel="stylesheet" href="/css/semantic.css">
+    <script src="/js/vue1.js" charset="utf-8"></script>
+    <script src="/js/reqwest.js" charset="utf-8"></script>
+    <style>
+        body {
+            background-color: #F3F9FD;
+        }
+
+        .ui.raised.very.container.segment {
+            background-color: #F3F9FD;
+        }
+    </style>
+</head>
+
+<body id="app">
+
+    <div class="ui one column grid">
+        <div class="column">
+            <div class="ui raised segment">
+                <a class="ui yellow ribbon label">leave flow</a>
+                <span>请假申请列表</span>
+                <br/>
+                <div class="ui divider"></div>
+                <a class="ui blue ribbon label" href="leaveForm.html"><i class="add user icon"></i>添加请假申请</a>
+                <table class="ui violet table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>请假人</th>
+                            <th>请假天数</th>
+                            <th>请假事由</th>
+                            <th>请假备注</th>
+                            <th>请假时间</th>
+                            <th>请假状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="leaveBill in leaveBillList">
+                            <td>{{leaveBill.id}}</td>
+                            <td>{{leaveBill.user.username}}</td>
+                            <td>{{leaveBill.days}}</td>
+                            <td>{{leaveBill.content}}</td>
+                            <td>{{leaveBill.remark}}</td>
+                            <td>{{leaveBill.leaveDate}}</td>
+                            <td v-if="leaveBill.state==0">初始录入</td>
+                            <td v-if="leaveBill.state==1">审批中</td>
+                            <td v-if="leaveBill.state==2">审核通过</td>
+                            <td v-if="leaveBill.state==0"><a href="/auth/workflow/leaveForm.html?id={{leaveBill.id}}">修改</a>&nbsp<a href="/api/deleteLeaveBill/{{leaveBill.id}}">删除</a>&nbsp<a href="/api/startProcess/{{leaveBill.id}}">申请请假</a></td>
+                            <td v-if="leaveBill.state==1"><a href="leaveMessage.html?id={{leaveBill.id}}">查看审核记录</a></td>
+                            <td v-if="leaveBill.state==2"><a v-on:click="forword">删除</a>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3 v-if="leaveBillList.length==0"><center>暂无数据...</center></h3>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script>
+    var vu = new Vue({
+        el: '#app',
+        data: {
+            leaveBillList: []
+        },
+        methods: {
+            getData : function() {
+                var self = this;
+                reqwest({
+                    url: "/api/leaveBillList",
+                    type: "json",
+                    method: "get",
+                    success: function(root) {
+                        root.forEach(function(element) {
+                            element.leaveDate = self.dateFormat(element.leaveDate);
+                        });
+                        console.log(root);
+                        self.leaveBillList = root;
+                    }
+                })
+
+            },
+            dateFormat: function(time) {
+                var date = new Date(time);
+                Y = date.getFullYear() + '-';
+                M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                D = date.getDate() + ' ';
+                h = date.getHours() + ':';
+                m = date.getMinutes() + ':';
+                s = date.getSeconds();
+                return Y + M + D + h + m + s;
+            },
+            forword:function () {
+                var self = this;
+                reqwest({
+                    url: "/api/deleteCompletedLeaveBillById/"+self.leaveBill.id,
+                    type: "json",
+                    method: "get",
+                    success: function(root) {
+                        location.href ="/auth/workflow/leaveManagement.html";
+                    }
+                })
+            }
+        },
+        ready: function() {
+            this.getData();
+        }
+    });
+</script>
+
+</html>

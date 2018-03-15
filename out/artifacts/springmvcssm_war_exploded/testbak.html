@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+ <HEAD>
+  <TITLE> ZTREE DEMO </TITLE>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="/css/zTreeStyle/zTreeStyle.css" type="text/css">
+  
+  <script type="text/javascript" src="/js/jquery-3.1.1.js"></script>
+  <script type="text/javascript" src="/js/jquery-ztree-2.5.js"></script>
+
+  <SCRIPT LANGUAGE="JavaScript">
+  <!--
+	var zTree;
+
+	var setting = {
+		isSimpleData: true,
+		treeNodeKey: "id",
+		treeNodeParentKey: "pId",
+		showLine: true,
+		root:{ 
+			isRoot:true,
+			nodes:[]
+		}
+	};
+
+	zNodes =[
+		{ id:1, pId:0, name:"李永军",isParent:true},
+		{ id:2, pId:1, name:"李永军"},
+		{ id:3, pId:0, name:"李永军"∑}
+		
+		
+	];
+
+	$(document).ready(function(){
+		zTree = $("#tree").zTree(setting, zNodes);	
+	});
+
+  //-->
+  </SCRIPT>
+ </HEAD>
+<BODY>
+<TABLE border=0 height=600px align=left>
+	<TR>
+		<TD width=230px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+			<ul id="tree" class="tree" style="width:230px; overflow:auto;"></ul>
+		</TD>
+	</TR>
+</TABLE>
+ </BODY>
+</HTML>

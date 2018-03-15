@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jenius.web.dao.LeaveBillDao">
+
+    <select id="getLeaveBillList" resultMap="leaveBillList">
+        select * from leavebill,user where user_id = user.id and user.id = #{id}
+    </select>
+
+    <delete id="deleteLeaveBillById">
+        delete from leavebill where id = #{id}
+    </delete>
+
+    <insert id="addLeaveBill" parameterType="com.jenius.web.meta.workflow.LeaveBill">
+        insert into leavebill(days,content,remark,leaveDate,state,user_id) values(#{leaveBill.days},#{leaveBill.content},#{leaveBill.remark},#{leaveBill.leaveDate},#{leaveBill.state},#{leaveBill.user.id})
+    </insert>
+
+    <update id="updateLeaveBill" parameterType="com.jenius.web.meta.workflow.LeaveBill">
+        UPDATE leavebill set days = #{leaveBill.days} ,content = #{leaveBill.content},remark = #{leaveBill.remark}, leaveDate =  #{leaveBill.leaveDate}, state = #{leaveBill.state} WHERE id = #{leaveBill.id}
+    </update>
+
+    <select id="getLeaveBillById" resultType="com.jenius.web.meta.workflow.LeaveBill">
+        SELECT * from leavebill where id = #{id}
+    </select>
+
+    <update id="updateLeaveBillStateById">
+        update leavebill set state = #{state} where id = #{id}
+    </update>
+    <resultMap id="leaveBillList" type="com.jenius.web.meta.workflow.LeaveBill">
+        <constructor>
+            <idArg column="id" javaType="Integer"/>
+            <arg column="days" javaType="Integer"/>
+            <arg column="content" javaType="String"/>
+            <arg column="remark" javaType="String"/>
+            <arg column="leaveDate" javaType="java.util.Date"/>
+            <arg column="state" javaType="Integer"/>
+        </constructor>
+        <association property="user" column="user_id" javaType="com.jenius.web.meta.User">
+            <id property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="sex" column="sex"/>
+            <result property="phone" column="phone"/>
+            <result property="email" column="email"/>
+
+        </association>
+    </resultMap>
+
+
+</mapper>

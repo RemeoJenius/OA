@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jenius.web.dao.MenuDao">
+
+    <select id="getLeftMenuByUid" resultType="com.jenius.web.meta.Menu">
+      select menu.* from menu,user_menu where menu.mid=user_menu.mid and uid=#{uid}
+    </select>
+    <select id="getMenuList" resultType="com.jenius.web.meta.Menu">
+        SELECT *
+        FROM menu
+
+    </select>
+
+    <select id="getMenuListByPid" resultType="com.jenius.web.meta.Menu">
+        SELECT *
+        FROM menu WHERE pid=#{pid}
+
+    </select>
+
+    <insert id="addMid">
+        insert into user_menu (uid,mid) values (#{uid},#{mid});
+    </insert>
+
+    <select id="getMenuByUid" resultMap="getMenuByUserId">
+        select user.*,user_menu.*,menu.* from user,user_menu,menu where user.id = user_menu.uid and menu.mid=user_menu.mid and uid=#{uid}
+    </select>
+
+    <select id="getMidsByUid" resultType="int">
+        select mid from user_menu where uid = #{uid}
+    </select>
+
+    <delete id="deleteMidAllByUid">
+        delete from user_menu where uid = #{uid}
+    </delete>
+
+    <resultMap id="getMenuByUserId" type="com.jenius.web.meta.User">
+        <constructor>
+            <idArg column="id" javaType="int"/>
+            <arg column="username" javaType="String"/>
+            <arg column="sex" javaType="String"/>
+            <arg column="phone" javaType="String"/>
+            <arg column="email" javaType="String"/>
+        </constructor>
+        <collection property="menus" ofType="com.jenius.web.meta.Menu">
+            <id property="mid" column="mid"/>
+            <result property="pid" column="pid"/>
+            <result property="name" column="name"/>
+            <result property="icon" column="icon"/>
+        </collection>
+    </resultMap>
+</mapper>

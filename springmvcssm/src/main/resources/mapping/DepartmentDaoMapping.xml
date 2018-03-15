@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jenius.web.dao.DepartmentDao">
+
+
+    <select id="getAllDepartment" resultType="com.jenius.web.meta.Department">
+        SELECT *
+        FROM DEPARTMENT
+
+    </select>
+    <delete id="deleteDepartmentById" parameterType="int">
+        DELETE FROM department WHERE id = #{id}
+    </delete>
+    
+    <select id="geteDepartmentById" resultType="com.jenius.web.meta.Department">
+        select * from department WHERE id = #{id}
+    </select>
+
+    <insert id="saveDepartment" >
+        insert into department (dname,description) values (#{department.dname},#{department.description});
+    </insert>
+
+    <select id="getDepartmentById" resultType="com.jenius.web.meta.Department">
+        select * from department WHERE id = #{id}
+    </select>
+
+    <update id="updateDepartment">
+        update department set dname=#{department.dname},description = #{department.description} WHERE id=#{department.id}
+    </update>
+</mapper>

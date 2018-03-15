@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jenius.web.dao.UserDao">
+
+    <select id="isUser" parameterType="String" resultType="com.jenius.web.meta.User">
+        select * from user where username = #{username}
+    </select>
+    <insert id="addUserPost">
+        INSERT INTO user_post(uid,pid) value(#{uid},#{pid})
+    </insert>
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="user.id" parameterType="com.jenius.web.meta.User">
+        INSERT INTO USER(username,password,sex,phone,email,departmentID,managerId) VALUES(#{user.username},#{user.password},#{user.sex},#{user.phone},#{user.email},#{user.department.id},2)
+  </insert>
+
+    <select id="getUserList" resultType="com.jenius.web.meta.User">
+        SELECT *
+        FROM user
+
+    </select>
+
+    <update id="updatePasswordById">
+        update user set password = #{password} where id = #{id}
+    </update>
+
+    <select id="getUserManagementList" resultMap="getUser">
+        select user.id,user.username,user.sex,user.phone,user.email,user.image,departmentID ,dname, pname  from user, department d, post, user_post where user.departmentID = d.id and user.id=user_post.uid and post.id=user_post.pid
+
+    </select>
+
+    <update id="updateUser" parameterType="com.jenius.web.meta.User">
+        UPDATE user SET username = #{user.username}, sex = #{user.sex}, phone = #{user.phone}, email = #{user.email},departmentID = #{user.department.id} WHERE id = #{user.id}
+    </update>
+
+    <update id="updateUserPost" parameterType="com.jenius.web.meta.User">
+        UPDATE user_post SET pid = #{pid}, uid = #{uid} WHERE uid= #{id}
+    </update>
+    <delete id="deleteUserPostBuyUserId">
+        delete from user_post WHERE uid = #{uid}
+    </delete>
+
+    <delete id="deleteUser">
+        delete from user WHERE id=#{id}
+    </delete>
+
+    <select id="getUserById" resultMap="getUserById">
+        select user.id,user.username,user.sex,user.phone,user.email,user.image,departmentID ,dname, pname  from user, department d, post, user_post where user.departmentID = d.id and user.id=user_post.uid and post.id=user_post.pid and user.id =#{id}
+    </select>
+
+
+    <select id="loginCheck" resultType="com.jenius.web.meta.User">
+        select * from user where username = #{user.username} and password=#{user.password}
+    </select>
+
+    <select id="getUserByUsername" resultMap="getUserByName">
+        select * from user u1 left join user u2 on (u1.managerId = u2.id) where u1.username=#{user.username}
+    </select>
+
+    <resultMap id="getUserByName" type="com.jenius.web.meta.User">
+        <constructor>
+            <idArg column="u1.id" javaType="int"/>
+            <arg column="u1.username" javaType="String"/>
+            <arg column="u1.sex" javaType="String"/>
+            <arg column="u1.phone" javaType="String"/>
+            <arg column="u1.email" javaType="String"/>
+            <arg column="u1.image" javaType="String"/>
+        </constructor>
+        <association property="manager" column="managerId" resultMap="userResultMap"/>
+
+
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.jenius.web.meta.User">
+        <constructor>
+            <idArg column="u2.id" javaType="int"/>
+            <arg column="u2.username" javaType="String"/>
+            <arg column="u2.sex" javaType="String"/>
+            <arg column="u2.phone" javaType="String"/>
+            <arg column="u2.email" javaType="String"/>
+            <arg column="u2.image" javaType="String"/>
+        </constructor>
+
+    </resultMap>
+
+    <resultMap id="getUserById" type="com.jenius.web.meta.User">
+        <constructor>
+            <idArg column="id" javaType="int"/>
+            <arg column="username" javaType="String"/>
+            <arg column="sex" javaType="String"/>
+            <arg column="phone" javaType="String"/>
+            <arg column="email" javaType="String"/>
+            <arg column="image" javaType="String"/>
+        </constructor>
+        <association property="department" column="departmentID" javaType="com.jenius.web.meta.Department">
+            <id property="id" column="id"/>
+            <result property="dname" column="dname"/>
+        </association>
+        <collection property="posts" ofType="com.jenius.web.meta.Post">
+            <id property="id" column="pid"/>
+            <result property="pname" column="pname"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="getUser" type="com.jenius.web.meta.User">
+        <constructor>
+            <idArg column="id" javaType="int"/>
+            <arg column="username" javaType="String"/>
+            <arg column="sex" javaType="String"/>
+            <arg column="phone" javaType="String"/>
+            <arg column="email" javaType="String"/>
+            <arg column="image" javaType="String"/>
+        </constructor>
+        <association property="department" column="departmentID" javaType="com.jenius.web.meta.Department">
+            <id property="id" column="id"/>
+            <result property="dname" column="dname"/>
+        </association>
+        <collection property="posts" ofType="com.jenius.web.meta.Post">
+            <id property="id" column="pid"/>
+            <result property="pname" column="pname"/>
+        </collection>
+    </resultMap>
+</mapper>

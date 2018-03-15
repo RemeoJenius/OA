@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BPMNEditorStateService">
+    <stateFile url="file://$PROJECT_DIR$/springmvcssm/src/main/resources/diagrams/leave.bpmn">
+      <view grid="false" />
+    </stateFile>
+    <stateFile url="file://$PROJECT_DIR$/springmvcssm/src/main/resources/diagrams/sequenceFlow.bpmn">
+      <view grid="false" />
+    </stateFile>
+    <stateFile url="file://$PROJECT_DIR$/springmvcssm/src/main/resources/diagrams/leaveBill3.bpmn">
+      <view grid="false" />
+    </stateFile>
+    <stateFile url="file://$PROJECT_DIR$/springmvcssm/src/main/resources/diagrams/leaveBill3.bpmn">
+      <view grid="false" />
+    </stateFile>
+    <stateFile url="file://$PROJECT_DIR$/springmvcssm/src/main/resources/diagrams/leaveBill2.bpmn">
+      <view grid="false" />
+    </stateFile>
+    <stateFile url="file://$PROJECT_DIR$/springmvcssm/src/main/resources/diagrams/leaveBill2.bpmn">
+      <view grid="false" />
+    </stateFile>
+    <stateFile url="file://$PROJECT_DIR$/springmvcssm/src/main/resources/diagrams/test.bpmn">
+      <view grid="false" />
+    </stateFile>
+    <stateFile url="file://$PROJECT_DIR$/springmvcssm/src/main/resources/diagrams/leaveBill.bpmn">
+      <view grid="false" />
+    </stateFile>
+    <stateFile url="file://$PROJECT_DIR$/springmvcssm/src/main/resources/diagrams/helloworld.bpmn">
+      <view grid="false" />
+    </stateFile>
+  </component>
+</project>

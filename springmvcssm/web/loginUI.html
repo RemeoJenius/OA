@@ -1,0 +1,64 @@
+<HTML>
+<HEAD>
+    <META http-equiv=Content-Type CONTENT="text/html; charset=utf-8" />
+	<TITLE>高校 OA</TITLE>
+    <link rel="stylesheet" href="/css/blue/login.css" type="text/css">
+    <script src="/js/vue1.js" charset="utf-8"></script>
+    <script src="/js/reqwest.js" charset="utf-8"></script>
+</HEAD>
+
+<BODY id="app" LEFTMARGIN=0 TOPMARGIN=0 MARGINWIDTH=0 MARGINHEIGHT=0 CLASS=PageBody >
+<FORM @submit.prevent="submit">
+    <DIV ID="CenterAreaBg">
+        <DIV ID="CenterArea">
+            <DIV ID="LogoImg"><IMG BORDER="0" SRC="/css/blue/images/logo.png" /></DIV>
+            <DIV ID="LoginInfo">
+                <TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 width=100%>
+                    <TR>
+                        <TD width=45 CLASS="Subject"><IMG BORDER="0" SRC="/css/blue/images/login/userId.gif" /></TD>
+                        <TD><INPUT v-model="user.username" SIZE="20" CLASS="TextField" TYPE="text" NAME="loginName" /></TD>
+                        <TD ROWSPAN="2" STYLE="padding-left:10px;"><INPUT TYPE="image" SRC="/css/blue/images/login/userLogin_button.gif"/></TD>
+                    </TR>
+                    <TR>
+                        <TD CLASS="Subject"><IMG BORDER="0" SRC="/css/blue/images/login/password.gif" /></TD>
+                        <TD><INPUT v-model="user.password" SIZE="20" CLASS="TextField" TYPE="password" NAME="password" /></TD>
+                    </TR>
+                </TABLE>
+                <p v-if="msg != null" style="color:red;font-size:25px;">{{msg}}</p>
+            </DIV>
+            <DIV ID="CopyRight"><A HREF="javascript:void(0)">&copy; 2010 版权所有 jenius</A></DIV>
+        </DIV>
+    </DIV>
+</FORM>
+</BODY>
+<script>
+var vm = new Vue({
+    el:'#app',
+    data:{
+        user:{},
+        msg:null
+    },
+    methods:{
+        submit: function() {
+           var self = this;
+           reqwest({
+               url: "/api/login",
+               type: "json",
+               method: "post",
+               data:{'username':self.user.username,'password':self.user.password},
+               success: function(root) {
+                   console.log(root);
+                   self.msg = root.message;
+                   if(root.user!=null)
+                            location.href ="/auth/index/index.html";
+               }
+           })
+
+       }
+   },
+   ready:function () {
+
+   }
+});
+</script>
+</HTML>

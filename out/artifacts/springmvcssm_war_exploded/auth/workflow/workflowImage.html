@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>当前流程图</title>
+</head>
+<link rel="stylesheet" href="/css/semantic.css">
+<script src="/js/vue1.js" charset="utf-8"></script>
+<script src="/js/reqwest.js" charset="utf-8"></script>
+
+<body id="app">
+    <div>
+         <img v-bind:src="imgUrl"+/>
+        <div style="position:absolute; border:2px solid red;
+      left:{{rect.x}}px;
+      top:{{rect.y+5}}px;
+      width:{{rect.width }}px;
+      height:{{rect.height+3 }}px;">
+    </div>
+    </div>
+</body>
+<script>
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    };
+    var vu = new Vue({
+        el: '#app',
+        data: {
+            rect : {},
+            processDefinitionId:null,
+            imgUrl : null
+        },
+        methods: {
+            getRectData: function() {
+                var self = this;
+                reqwest({
+                    url: "/api/getRect/" + GetQueryString("taskId"),
+                    type: "json",
+                    method: "get",
+                    success: function(root) {
+                        console.log(root);
+                        self.rect = root;
+                        // self.rect.y = root.y;
+                        // self.rect.width = root.width;
+                        // self.rect.height = root.height;
+                        self.imgUrl = "/api/showImg?processDefinitionId="+GetQueryString("processDefinitionId");
+                        self.processDefinitionId = GetQueryString("processDefinitionId");
+                    }
+                })
+            }
+        },
+        ready: function() {
+            this.getRectData();
+        }
+    });
+</script>
+
+</html>

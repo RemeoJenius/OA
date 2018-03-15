@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>请假</title>
+    <link rel="stylesheet" href="/css/semantic.css">
+    <script src="/js/vue1.js" charset="utf-8"></script>
+    <script src="/js/reqwest.js" charset="utf-8"></script>
+    <style>
+        body{
+            background-color:#F3F9FD;
+        }
+        .ui.raised.very.padded.text.container.segment{
+            background-color:#F3F9FD;
+        }
+    </style>
+</head>
+
+<body id="app">
+
+    <div class="ui raised very padded text container segment">
+        <div class="ui raised segment">
+            <a class="ui red ribbon header label"><i class="meh icon"></i>请假流程</a>
+            <form v-form class="ui form"  @submit.prevent="onSubmit">
+                <div class="field">
+                    <label>请假原因</label>
+                    <input name="content" v-model="person.content" type="text">
+                </div>
+                <div class="field">
+                    <label>请假天数</label>
+                    <input name="days" v-model="person.days" type="text">
+                </div>
+                <div class="field">
+                    <label>备注</label>
+                    <textarea name="remark" v-model="person.remark" cols="5"></textarea>
+                </div>
+                <button class="ui blue inverted submit button">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+function GetQueryString(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+	var r = window.location.search.substr(1).match(reg);
+	if (r != null) return unescape(r[2]);
+	return null;
+};
+    var vu = new Vue({
+        el:'#app',
+        data:{
+            person:{},
+        },
+        methods:{
+            onSubmit:function () {
+                var self = this;
+                if(this.person.remark!=null&&this.person.days!=null&&this.person.content!=null&&this.person.remark!=''&&this.person.days!=''&&this.person.content!=''&& !isNaN(this.person.days)){
+                    if (GetQueryString("id") != null) {
+                        reqwest({
+                            url: "/api/updateLeaveBill/"+GetQueryString("id"),
+                            type: "json",
+                            method: "post",
+                            data:{'remark':self.person.remark,'days':self.person.days,'content':self.person.content},
+                            success: function(root) {
+                                location.href ="leaveManagement.html";
+
+                            }
+                        })
+    				}else{
+                        reqwest({
+                            url: "/api/addLeaveBill",
+                            type: "json",
+                            method: "post",
+                            data:{'remark':self.person.remark,'days':self.person.days,'content':self.person.content},
+                            success: function(root) {
+                                location.href ="leaveManagement.html";
+
+                            }
+                        })
+                    }
+
+                }else{
+                    alert("您的输入有误，不能为空，天数必须是数字");
+                }
+            },
+            getData : function () {
+                var self = this;
+                if (GetQueryString("id") != null) {
+                    reqwest({
+                        url: "/api/getLeaveBill/"+GetQueryString("id"),
+                        type: "json",
+                        method: "post",
+                        success: function(root) {
+                            console.log(root);
+                            self.person = root;
+                        }
+                    })
+                }
+            }
+        },
+        ready : function () {
+            this.getData();
+        }
+    });
+</script>
+
+</html>

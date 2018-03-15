@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jenius.web.dao.PostDao">
+
+
+    <select id="getPostList" resultType="com.jenius.web.meta.Post">
+        SELECT *
+        FROM post
+
+    </select>
+
+    <select id="getPostById" resultType="com.jenius.web.meta.Post">
+        SELECT *
+        FROM post WHERE id = #{id}
+
+    </select>
+
+    <delete id="deletePostById" parameterType="int">
+        DELETE FROM post WHERE id = #{id}
+    </delete>
+
+    <insert id="addPost" parameterType="com.jenius.web.meta.Post">
+        INSERT INTO post(pname,description) values(#{post.pname},#{post.description});
+    </insert>
+
+    <update id="updatePost" parameterType="com.jenius.web.meta.Post">
+        UPDATE post SET pname = #{post.pname}, description = #{post.description} WHERE id = #{id}
+    </update>
+
+</mapper>

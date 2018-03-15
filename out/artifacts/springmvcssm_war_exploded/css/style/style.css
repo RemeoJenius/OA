@@ -1,0 +1,23 @@
+@charset "utf-8";
+body {
+}
+body,div,p,ul,li{margin:0;padding:0;}
+.www_zzjs_net_show{display:none;width:699px;height:auto;}
+#con_zzjs_1{display:block;}
+#menubox{width:1241px;margin-bottom:7px;background: url(../images/lan_bg.gif) repeat-x;height:39px;}
+#menubox02{width:1191px;background: url(../images/big_bg.gif) repeat-x;height:529px;}
+#menubox ul,#menubox02 ul{margin:0;padding:0;}
+#menubox ul li{float:left;list-style:none;display:inline;padding-top:15px;margin:0px 2px;white-space:nowrap; text-
+overflow:ellipsis;cursor:pointer;width:120px;height:38px;text-align:center;font-size:14px;overflow:visible;background: url(../images/tab01_2.gif) 0px 11px no-repeat;color:#3d3d3d;}
+#menubox02 ul li{float:left;list-style:none;display:inline;padding-top:15px;margin:0px 2px;white-space:nowrap; text-
+overflow:ellipsis;cursor:pointer;width:128px;height:38px;text-align:center;font-size:14px;overflow:visible;background: url(../images/bg.gif) 0px 11px no-repeat;color:#3d3d3d;}
+#menubox ul li a{background: url(../images/li.gif) 10px 3px no-repeat;display:block;}
+#menubox02{padding:10px 0px 0px 50px;}
+#menubox02  ul li{}
+#menubox ul li.hover{color: #3d3d3d;font-weight:bold;background: url(../images/tab01_1.gif) 0px 11px no-repeat;}
+#menubox02 ul li.hover{color: #3d3d3d;font-weight:bold;background: url(../images/bor.gif) 0px 11px no-repeat;}
+#con_zzjs_3{background: #FFFFFF;}
+
+.addnodes {width:100px;background: #FFF;border:1px solid #8ab2e6;}
+.addnodes ul li{list-style:none;padding:4px 0px 4px 30px;font-size:12px;width:100px;}
+.addnodes ul li a{text-decoration:none;color:#000;}

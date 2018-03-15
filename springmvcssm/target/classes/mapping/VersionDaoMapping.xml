@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jenius.web.dao.VersionDao">
+
+    <select id="selectVersionByKid" resultMap="selectVersionByKid">
+      SELECT version.* , kynamic.* from version,kynamic WHERE version.kid = #{kid} and kynamic.kid = #{kid}
+    </select>
+
+    <insert id="addVersion">
+        INSERT INTO version(version, updateTime,title, content, kid) values(#{version.version},#{version.updateTime},#{version.title},#{version.content},#{version.kynamic.kid});
+    </insert>
+
+    <resultMap id="selectVersionByKid" type="com.jenius.web.meta.Version">
+        <constructor>
+            <idArg column="vid" javaType="int"/>
+            <arg column="version" javaType="int"/>
+            <arg column="updateTime" javaType="java.util.Date"/>
+            <arg column="title" javaType="String"/>
+            <arg column="content" javaType="String"/>
+        </constructor>
+        <association property="kynamic" column="version.kid" javaType="com.jenius.web.meta.Kynamic">
+            <id property="kid" column="kid"/>
+            <result property="pid" column="pid"/>
+            <result property="name" column="name"/>
+            <result property="isParent" column="isParent"/>
+        </association>
+    </resultMap>
+</mapper>

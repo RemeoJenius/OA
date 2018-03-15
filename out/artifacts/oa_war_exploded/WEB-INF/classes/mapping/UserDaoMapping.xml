@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdgxy.oa.dao.UserDao">
+
+
+    <select id="getUserById" resultType="com.qdgxy.oa.meta.User">
+        SELECT *
+        FROM user
+
+    </select>
+    <select id="userCheck" resultType="com.qdgxy.oa.meta.User" parameterType="com.qdgxy.oa.meta.User">
+            SELECT * FROM USER WHERE username = #{user.username} AND password = #{user.password}
+    </select>
+
+
+</mapper>

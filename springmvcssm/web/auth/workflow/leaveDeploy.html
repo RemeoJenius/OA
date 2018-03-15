@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>请假</title>
+    <link rel="stylesheet" href="/css/semantic.css">
+    <script src="/js/vue1.js" charset="utf-8"></script>
+    <script src="/js/reqwest.js" charset="utf-8"></script>
+    <style>
+        body {
+            background-color: #F3F9FD;
+        }
+
+        .ui.raised.very.container.segment {
+            background-color: #F3F9FD;
+        }
+    </style>
+</head>
+
+<body id="app">
+
+        <div class="ui one column grid">
+            <div class="column">
+                <div class="ui raised segment">
+                    <a class="ui red ribbon label">leave flow</a>
+                    <span>部署信息管理列表</span>
+                    <table class="ui black table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>流程名称</th>
+                                <th>发布时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="deployment in deploymentList">
+                                <td>{{deployment.id}}</td>
+                                <td>{{deployment.name}}</td>
+                                <td>{{deployment.deployTime}}</td>
+                                <td><a href="/api/deleteProcessDefinition/{{deployment.id}}">删除</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui raised segment">
+                    <a class="ui yellow ribbon label">leave flow</a>
+                    <span>流程定义信息列表</span>
+                    <table class="ui violet table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>名称</th>
+                                <th>流程定义的key</th>
+                                <th>流程定义的版本</th>
+                                <th>流程定义的规则文件名称</th>
+                                <th>流程定义的规则图片名称</th>
+                                <th>部署ID</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="processDefinition in pdList">
+                                <td>{{processDefinition.id}}</td>
+                                <td>{{processDefinition.name}}</td>
+                                <td>{{processDefinition.key}}</td>
+                                <td>{{processDefinition.version}}</td>
+                                <td>{{processDefinition.resourceName}}</td>
+                                <td>{{processDefinition.dgrmResourceName}}</td>
+                                <td>{{processDefinition.deployId}}</td>
+                                <!--<td><a href="/api/showImage?deploymentId={{processDefinition.deployId}}&imageName={{processDefinition.dgrmResourceName}}">查看流程图</a></td>-->
+                                <td><a href="/api/showImg?processDefinitionId={{processDefinition.id}}">查看流程图</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui raised segment">
+                    <a class="ui blue ribbon label">deploy</a> 部署
+                    <form action="/api/newDeploy" method="post" enctype="multipart/form-data">
+                        流程名称:<input type="text" name="filename" v-model="msg.name"/> 流程文件:
+                        <input type="file" name="file" v-model="msg.file" />
+                        <input class="button blue inverted ui" type="submit" value="提交">
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+</body>
+<script>
+var vu = new Vue({
+    el: '#app',
+    data: {
+        msg:{},
+        deploymentList:[],
+        pdList:[]
+    },
+    methods: {
+        getData: function() {
+            var self = this;
+            reqwest({
+                url: "/api/deployHome",
+                type: "json",
+                method: "get",
+                success: function(root) {
+                    console.log(root);
+                    self.pdList = root.pdList;
+                    self.deploymentList = root.deploymentList;
+                }
+            })
+
+        }
+    },
+    ready:function () {
+        this.getData();
+    }
+
+
+});
+</script>
+
+</html>

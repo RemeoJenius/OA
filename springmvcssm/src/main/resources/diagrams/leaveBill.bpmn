@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1488035527869" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="LeaveBill" isClosed="false" isExecutable="true" name="LeaveBillProcess" processType="None">
+    <startEvent id="_2" name="StartEvent"/>
+    <userTask activiti:assignee="#{inputUser}" activiti:exclusive="true" activiti:formKey="audit" id="UserTask1" name="提交申请"/>
+    <userTask activiti:assignee="#{inputUser}" activiti:exclusive="true" activiti:formKey="audit" id="UserTask2" name="主任审批">
+      <extensionElements>
+        <activiti:taskListener class="com.jenius.web.utils.ManagerTaskHandler" event="create"/>
+      </extensionElements>
+    </userTask>
+    <userTask activiti:assignee="#{inputUser}" activiti:exclusive="true" activiti:formKey="audit" id="UserTask3" name="院长审批">
+      <extensionElements>
+        <activiti:taskListener class="com.jenius.web.utils.ManagerTaskHandler" event="create">
+          <activiti:field>
+            <activiti:string/>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener class="com.jenius.web.utils.ManagerTaskHandler" event="create"/>
+      </extensionElements>
+    </userTask>
+    <endEvent id="_6" name="EndEvent"/>
+    <sequenceFlow id="_7" sourceRef="_2" targetRef="UserTask1"/>
+    <sequenceFlow id="_8" name="批准" sourceRef="UserTask1" targetRef="UserTask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outcome=='批准'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_9" name="批准" sourceRef="UserTask2" targetRef="UserTask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outcome=='批准'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_10" sourceRef="UserTask3" targetRef="_6"/>
+    <sequenceFlow id="_3" name="驳回" sourceRef="UserTask2" targetRef="UserTask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outcome=='驳回'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_5" name="驳回" sourceRef="UserTask3" targetRef="UserTask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${outcome=='驳回'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="LeaveBill">
+      <bpmndi:BPMNShape bpmnElement="_2" id="Shape-_2">
+        <omgdc:Bounds height="32.0" width="32.0" x="305.0" y="5.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UserTask1" id="Shape-UserTask1">
+        <omgdc:Bounds height="55.0" width="85.0" x="280.0" y="85.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UserTask2" id="Shape-UserTask2">
+        <omgdc:Bounds height="55.0" width="85.0" x="280.0" y="165.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UserTask3" id="Shape-UserTask3">
+        <omgdc:Bounds height="55.0" width="85.0" x="285.0" y="250.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" id="Shape-_6">
+        <omgdc:Bounds height="32.0" width="32.0" x="310.0" y="350.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_3" id="BPMNEdge__3" sourceElement="UserTask2" targetElement="UserTask1">
+        <omgdi:waypoint x="380.0" y="175.0"/>
+        <omgdi:waypoint x="445.0" y="175.0"/>
+        <omgdi:waypoint x="365.0" y="112.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5" id="BPMNEdge__5" sourceElement="UserTask3" targetElement="UserTask1">
+        <omgdi:waypoint x="270.0" y="277.5"/>
+        <omgdi:waypoint x="215.0" y="175.0"/>
+        <omgdi:waypoint x="280.0" y="112.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="_2" targetElement="UserTask1">
+        <omgdi:waypoint x="321.0" y="37.0"/>
+        <omgdi:waypoint x="321.0" y="85.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="UserTask1" targetElement="UserTask2">
+        <omgdi:waypoint x="322.5" y="155.0"/>
+        <omgdi:waypoint x="322.5" y="165.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="UserTask2" targetElement="UserTask3">
+        <omgdi:waypoint x="325.0" y="235.0"/>
+        <omgdi:waypoint x="325.0" y="250.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="UserTask3" targetElement="_6">
+        <omgdi:waypoint x="326.0" y="305.0"/>
+        <omgdi:waypoint x="326.0" y="350.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

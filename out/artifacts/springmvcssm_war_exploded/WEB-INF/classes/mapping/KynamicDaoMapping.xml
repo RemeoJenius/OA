@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jenius.web.dao.KynamicDao">
+
+    <select id="getKynamicAll" resultType="com.jenius.web.meta.Kynamic">
+        select * from kynamic
+    </select>
+    <insert id="saveKynamic" useGeneratedKeys="true" keyProperty="kynamic.kid" parameterType="com.jenius.web.meta.Kynamic">
+        INSERT INTO kynamic(pid,isParent,name) values(#{kynamic.pid},#{kynamic.isParent},#{kynamic.name})
+    </insert>
+
+    <select id="exsitName" resultType="com.jenius.web.meta.Kynamic">
+        select * from kynamic where name = #{name}
+    </select>
+
+    <delete id="deleteKynamic">
+        DELETE from kynamic where kid = #{kid}
+    </delete>
+
+    <update id="updateName">
+        update kynamic set name = #{kynamic.name} where kid = #{kynamic.kid}
+    </update>
+
+    <select id="getVersionByKid" resultType="com.jenius.web.meta.Version">
+        select * from version WHERE kid = #{kid}
+    </select>
+
+    <resultMap id="getMenuByUserId" type="com.jenius.web.meta.User">
+        <constructor>
+            <idArg column="id" javaType="int"/>
+            <arg column="username" javaType="String"/>
+            <arg column="sex" javaType="String"/>
+            <arg column="phone" javaType="String"/>
+            <arg column="email" javaType="String"/>
+        </constructor>
+        <collection property="menus" ofType="com.jenius.web.meta.Menu">
+            <id property="mid" column="mid"/>
+            <result property="pid" column="pid"/>
+            <result property="name" column="name"/>
+            <result property="icon" column="icon"/>
+        </collection>
+    </resultMap>
+</mapper>

@@ -1,0 +1,84 @@
+<html>
+<head>
+    <title>岗位列表</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="/css/blue/pageCommon.css" />
+    <script src="/js/vue1.js" charset="utf-8"></script>
+    <script src="/js/reqwest.js" charset="utf-8"></script>
+    <script src="/js/jquery-3.1.1.js" charset="utf-8"></script>
+    <script src="/js/common.js" charset="utf-8"></script>
+    <script src="/js/jquery-confirm.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    </script>
+</head>
+<body id="app">
+
+<div id="Title_bar">
+    <div id="Title_bar_Head">
+        <div id="Title_Head"></div>
+        <div id="Title"><!--页面标题-->
+            <img border="0" width="13" height="13" src="/css/images/title_arrow.gif"/> 岗位管理
+        </div>
+        <div id="Title_End"></div>
+    </div>
+</div>
+
+<div id="MainArea">
+    <table cellspacing="0" cellpadding="0" class="TableStyle">
+
+        <!-- 表头-->
+        <thead>
+            <tr align="CENTER" valign="MIDDLE" id="TableTitle">
+            	<td width="200px">岗位名称</td>
+                <td width="300px">岗位说明</td>
+                <td>相关操作</td>
+            </tr>
+        </thead>
+
+		<!--显示数据列表-->
+        <tbody id="TableData" class="dataContainer" datakey="roleList">
+			<tr v-for="role in postList" class="TableDetail1 template">
+				<td>{{role.pname}}&nbsp;</td>
+				<td>{{role.description}}&nbsp;</td>
+				<td><a href="/api/deletePost?id={{role.id}}">删除</a>
+					<a href="saveUI.html?id={{role.id}}">修改</a>
+				</td>
+			</tr>
+        </tbody>
+    </table>
+
+    <!-- 其他功能超链接 -->
+    <div id="TableTail">
+        <div id="TableTail_inside">
+            <a href="saveUI.html"><img src="/css/images/createNew.png" /></a>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+var vm = new Vue({
+    el:'#app',
+    data:{
+        postList:[]
+    },
+    methods:{
+        getData: function() {
+            var self = this;
+            reqwest({
+                url: "/api/postList",
+                type: "json",
+                method: "get",
+                success: function(root) {
+                    console.log(root[0]);
+                    self.postList = root;
+                }
+            })
+
+        }
+    },
+    ready:function () {
+        this.getData();
+    }
+});
+</script>
+</html>

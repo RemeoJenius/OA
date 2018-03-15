@@ -1,0 +1,133 @@
+<html>
+<head>
+	<title>个人信息</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script language="javascript" src="/js/pageCommon.js" charset="utf-8"></script>
+    <script src="/js/jquery-3.1.1.js" charset="utf-8"></script>
+    <script language="javascript" src="/js/PageUtils.js" charset="utf-8"></script>
+    <script language="javascript" src="/js/DemoData.js" charset="utf-8"></script>
+    <script language="javascript" src="/js/DataShowManager.js" charset="utf-8"></script>
+    <script src="/js/vue1.js" charset="utf-8"></script>
+    <script src="/js/reqwest.js" charset="utf-8"></script>
+    <link type="text/css" rel="stylesheet" href="/css/blue/pageCommon.css" />
+    <script type="text/javascript">
+    </script>
+</head>
+<body id="app">
+
+<!-- 标题显示 -->
+<div id="Title_bar">
+    <div id="Title_bar_Head">
+        <div id="Title_Head"></div>
+        <div id="Title"><!--页面标题-->
+            <img border="0" width="13" height="13" src="/images/title_arrow.gif"/> 个人信息
+        </div>
+        <div id="Title_End"></div>
+    </div>
+</div>
+
+<!--显示表单内容-->
+<div id=MainArea>
+    <form v-form name="myform" @submit.prevent="onSubmit" enctype="multipart/form-data">
+        <div class="ItemBlock_Title1"><!-- 信息说明<DIV CLASS="ItemBlock_Title1">
+        	<IMG BORDER="0" WIDTH="4" HEIGHT="7" SRC="../style/blue/images/item_point.gif" /> 个人信息 </DIV>  -->
+        </div>
+        
+        <!-- 表单内容显示 -->
+        <div class="ItemBlockBorder">
+            <div class="ItemBlock">
+                <table cellpadding="0" cellspacing="0" class="mainForm">
+					<tr>
+                        <td width="150">用户ID（登录名）</td>
+                        <td>{{user.username}}</td>
+						<td rowspan="5" align="right">
+							<img src="{{user.image}}"/>
+						</td>
+                    </tr>
+                    <tr>
+                        <td>部门</td>
+                        <td>{{user.department.dname}}</td>
+                    </tr>
+					<tr>
+                        <td>岗位</td>
+                        <td><span v-for="post in user.posts">{{post.pname}}&nbsp;</span></td>
+                    </tr>
+					<tr>
+                        <td>姓名</td>
+                        <td>{{user.username}}</td>
+                    </tr>
+					<!--<tr>-->
+                        <!--<td>头像</td>-->
+                        <!--<td><input type="file" name="resource" class="InputStyle" style="width: 400px;"/></td>-->
+                    <!--</tr>-->
+                </table>
+            </div>
+        </div>
+       
+        <!-- 表单操作 -->
+        <div id="InputDetailBar">
+            <!--<input type="image" src="/images/save.png"/>-->
+            <a href="javascript:history.go(-1);"><img src="/images/goBack.png"/></a>
+        </div>
+    </form>
+</div>
+
+<div class="Description">
+	验证规则：<br />
+	1，可以修改自已的头像，在右侧是头像的预览。<br />
+</div>
+
+</body>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            posts: [],
+            departments: [],
+            myform:{},
+            model:{},
+            user:{},
+            department:{},
+            message:'登录名要唯一'
+        },
+        methods: {
+//            onSubmit: function() {
+//                var self = this;
+//                reqwest({
+//                    url: "/api/up",
+//                    type: "json",
+//                    contentType: "application/json;charset=utf-8",
+//                    data:JSON.stringify(self.user),
+//                    method: "post",
+//                    success: function(root) {
+//                        console.log(root);
+//                        self.message = root.message;
+//                        if(root.message==null){
+//                            location.href ="/auth/user/list.html";
+//                        }
+//                    }
+//                })
+//            },
+            getData: function() {
+                var self = this;
+                reqwest({
+                    url: "/api/getUser",
+                    type: "json",
+                    method: "get",
+                    success: function(root) {
+                        console.log(root);
+                        if(root.image==null){
+                            root.image = "/images/defaultAvatar.gif";
+                        }
+                        self.user = root;
+
+                    }
+                });
+            }
+        },
+        ready: function() {
+            this.getData();
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>请假</title>
+    <link rel="stylesheet" href="/css/semantic.css">
+    <script src="/js/vue1.js" charset="utf-8"></script>
+    <script src="/js/reqwest.js" charset="utf-8"></script>
+    <style>
+        body {
+            background-color: #F3F9FD;
+        }
+
+        .ui.raised.very.padded.text.container.segment {
+            background-color: #F3F9FD;
+        }
+    </style>
+</head>
+
+<body id="app">
+
+    <div class="ui raised segment">
+        <a class="ui red ribbon header label"><i class="meh icon"></i>请假申请的任务办理</a>
+        <form class="ui form">
+            <div class="field">
+                <label>请假原因</label>
+                <input name="content" value="{{person.content}}" type="text" disabled/>
+            </div>
+            <div class="field">
+                <label>请假天数</label>
+                <input name="days" value="{{person.days}}" type="text" disabled/>
+            </div>
+            <div class="field">
+                <label>备注</label>
+                <textarea name="remark" cols="5" disabled/>{{person.remark}}</textarea>
+            </div>
+            <button class="ui red button" v-on:click="onSubmit" type="button" value="返回">返回</button>
+        </form>
+    </div>
+    <table class="ui violet table">
+        <thead>
+            <tr>
+                <th>审查</th>
+                <th>批注人</th>
+                <th>批注信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="comment in commentList">
+                <td>{{comment.time}}</td>
+                <td>{{comment.userId}}</td>
+                <td>{{comment.message}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <center v-if="commentList == null">暂时没有批注信息...</center>
+</body>
+<script>
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    };
+    var vu = new Vue({
+        el: '#app',
+        data: {
+            person: {},
+            outcomeList: {},
+            commentList: {}
+        },
+        methods: {
+            onSubmit: function() {
+                history.back();
+
+            },
+            getData: function() {
+                var self = this;
+                if (GetQueryString("id") != null) {
+                    reqwest({
+                        url: "/api/showHisComment/" + GetQueryString("id"),
+                        type: "json",
+                        method: "post",
+                        success: function(root) {
+                            console.log(root);
+                            self.person = root.leaveBill;
+                            // self.outcomeList = root.outcomeList;
+                            root.commentList.forEach(function(element) {
+                                element.time = self.dateFormat(element.time);
+                            });
+                            self.commentList = root.commentList;
+                        }
+                    })
+                }
+            },
+            dateFormat: function(time) {
+                var date = new Date(time);
+                Y = date.getFullYear() + '-';
+                M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                D = date.getDate() + ' ';
+                h = date.getHours() + ':';
+                m = date.getMinutes() + ':';
+                s = date.getSeconds();
+                return Y + M + D + h + m + s;
+            }
+        },
+        ready: function() {
+            this.getData();
+        }
+    });
+</script>
+
+</html>
